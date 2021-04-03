@@ -4,7 +4,9 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.sql.PreparedStatement;
 
@@ -111,23 +113,36 @@ public class ArtigoHelper {
 	*  @param Artigo
 	*  @throws SQLException
 	*  @return listagem artigos
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
 	*/
-	public ResultSet listarArtigo()
+	public List<ItemLista> listarArtigo() throws IllegalArgumentException, IllegalAccessException
 	{
 		// Conexão à DB
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
 		
+		// Lista de tipos de movimento:
+		List<ItemLista> listaArtigo = new ArrayList<ItemLista>();
+		
 		// Tabela de dados
-		ResultSet rSetListar = null;
+		ResultSet rSetArtigo = null;
 		
 		try 
 		{
 			// Stored Procedure
-			CallableStatement stmntList = con.prepareCall("{call STORED_PROCEDURE_LISTAR()}");
+			CallableStatement stmntList = con.prepareCall("{call SP_ARTIGO_LISTAR()}");
 			
 			// Execução da query
-			rSetListar = stmntList.executeQuery();
+			rSetArtigo = stmntList.executeQuery();
+			
+			// Criação da lista de objetos:
+			while (rSetArtigo.next()) {
+				ItemLista item = new ItemLista();                
+                // Conversão de um registo rSet para um objecto:
+                DBConverter.loadResultSetIntoObject(rSetArtigo, item);
+                listaArtigo.add(item);
+            }
 			
 			// Desconexão
 			conexaoDB.disconnect();
@@ -138,7 +153,7 @@ public class ArtigoHelper {
 			e.printStackTrace();
 		}
 		
-		return rSetListar;
+		return listaArtigo;
 	
 	}
 	

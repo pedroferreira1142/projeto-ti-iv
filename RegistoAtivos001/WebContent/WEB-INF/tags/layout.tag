@@ -9,6 +9,14 @@
       <!-- Bootstrap core CSS -->
       <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
       <link href="${pageContext.request.contextPath}/css/form-validation.css" rel="stylesheet">
+      <!-- Font Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+	<!-- Google Fonts -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+	<!-- Bootstrap core CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Material Design Bootstrap -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
       <style>
          .bd-placeholder-img {
          font-size: 1.125rem;
@@ -81,7 +89,7 @@
                               <span data-feather="chevron-right"></span> Criar Artigo
                                  </a>
                               </li>
-                              <li><a href="#" class="link-dark rounded nav-link"> <span
+                              <li><a href="${pageContext.request.contextPath}/ItemListServlet" class="link-dark rounded nav-link"> <span
                                  data-feather="chevron-right"></span> Listar Artigos
                                  </a>
                               </li>
@@ -144,5 +152,13 @@
          integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
          crossorigin="anonymous"></script>
       <script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
+      <!-- JQuery -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Bootstrap tooltips -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+	<!-- Bootstrap core JavaScript -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<!-- MDB core JavaScript -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
    </body>
 </html>

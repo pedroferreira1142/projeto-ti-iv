@@ -14,7 +14,7 @@
          <div class="col-md-7 col-lg-8">
             <br>
             <h4 class="mb-3">Criar um Artigo</h4>
-            <form class="needs-validation" method="post" action="${pageContext.request.contextPath}/SignUpServlet" novalidate>
+            <form class="needs-validation" method="post" action="${pageContext.request.contextPath}/ItemCreateServlet" novalidate>
                <div class="row g-3">
                   <div class="col-sm-12">
                      <label for="descricaoArtigo" class="form-label">Descrição</label>
@@ -77,11 +77,19 @@
                   </div>
                   ${testeMensagem}
                   ${messageObs}
-                  <div class="col-sm-12">
-                     <label for="obs" class="form-label">Observações</label>
-                     <select name="category">
+                  <div class="col-sm-6">
+                     <label for="estado" class="form-label">Observações </label>
+                     <select name="estado">
 						<c:forEach items="${listaEstados}" var="estado">
 					        <option value="${estado.uid}">${estado.item}</option>
+					    </c:forEach>
+					</select>
+                  </div>
+                  <div class="col-sm-6">
+                     <label for="tipoArtigo" class="form-label">Tipo de Artigo </label>
+                     <select name="tipoArtigo">
+						<c:forEach items="${listaTipoArtigos}" var="tipoArtigo">
+					        <option value="${tipoArtigo.uid}">${tipoArtigo.item}</option>
 					    </c:forEach>
 					</select>
                   </div>

@@ -49,8 +49,11 @@ public class ItemCreateServlet extends HttpServlet {
 		
 		try
 		{
-			List<ItemLista> listaTeste = eH.listarEstado();
-			request.setAttribute("listaEstados", listaTeste);
+			// Listagem de estados e tipo de artigo
+			List<ItemLista> listaEstados = eH.listarEstado();
+			List<ItemLista> listaTipoArtigo = tAH.listarTipoArtigo();
+			request.setAttribute("listaEstados", listaEstados);
+			request.setAttribute("listaTipoArtigos", listaTipoArtigo);
 		} 
 		catch (IllegalArgumentException | IllegalAccessException e) 
 		{
@@ -73,9 +76,14 @@ public class ItemCreateServlet extends HttpServlet {
 		Artigo a = new Artigo();
 		ArtigoHelper aH = new ArtigoHelper();
 		
+		// Utilizador
+		HttpSession session = request.getSession();
+		Utilizador u = (Utilizador) session.getAttribute("user");
+		
 		// Lista de campos
 		List<String> campos = new ArrayList<String>();
 		
+		// Values dos campos do form 
 		String descricao = request.getParameter("descricaoArtigo");
 		String marca = request.getParameter("marcaArtigo");
 		String modelo = request.getParameter("modelo");
@@ -83,6 +91,8 @@ public class ItemCreateServlet extends HttpServlet {
 		String numSerie = request.getParameter("numSerie");
 		String localStock = request.getParameter("localStock");
 		String obs = request.getParameter("obs");
+		String estado = request.getParameter("estado");
+		String tipoArtigo = request.getParameter("tipoArtigo");
 		
 		campos.add(descricao);
 		campos.add(marca);
@@ -113,13 +123,16 @@ public class ItemCreateServlet extends HttpServlet {
 				a.setNumSerie(numSerie);
 				a.setLocalStock(localStock);
 				a.setObs(obs);
+				a.setFkIdUtilizador(u.getUid());
+				a.setFkIdEstado(estado);
+				a.setFkIdTipoArtigo(tipoArtigo);
 				
 				// Criação do utilizador
 				aH.criarArtigo(a);
 				
 				// Mensagem e página index
 				request.setAttribute("message", "Novo artigo criado");
-				destPage = "views/Utilizador/index.jsp";
+				destPage = "index.jsp";
 			}
 			catch (IllegalArgumentException ex ) 
 			{

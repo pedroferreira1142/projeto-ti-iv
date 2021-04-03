@@ -1,5 +1,6 @@
 package models;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +21,9 @@ public class TipoArtigoHelper {
 		// Conexão à BD
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
+		
+		// Lista de tipos de movimento:
+		List<ItemLista> listaEstado = new ArrayList<ItemLista>();
 		
 		try 
 		{
@@ -50,7 +54,7 @@ public class TipoArtigoHelper {
 	*  @throws IllegalAccessException 
 	*  @throws IllegalArgumentException
 	*/
-	public List<ItemLista> editarTipoArtigo(ItemLista tipoArtigo) throws IllegalArgumentException, IllegalAccessException
+	public List<ItemLista> editarTipoArtigo() throws IllegalArgumentException, IllegalAccessException
 	{
 		// Conexão à BD
 		ConexaoDB conexaoDB = new ConexaoDB();
@@ -98,12 +102,17 @@ public class TipoArtigoHelper {
 	*  @param ItemLista
 	*  @throws SQLException
 	*  @return ResultSet ItemLista
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
 	*/
-	public ResultSet listarTipoArtigo(ItemLista tipoArtigo) 
+	public List<ItemLista> listarTipoArtigo() throws IllegalArgumentException, IllegalAccessException 
 	{
 		// Conexão à BD
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
+		
+		// Lista de tipos de movimento:
+		List<ItemLista> listaTipoArtigo = new ArrayList<ItemLista>();
 		
 		// Tabela de dados
 		ResultSet rSetTipoArtigo = null;
@@ -111,10 +120,19 @@ public class TipoArtigoHelper {
 		try 
 		{
 			// Stored Procedure
-			PreparedStatement stmntCreate = con.prepareCall("{call STORED_PROCEDURE_LISTAR_TIPO_ARTIGO(?)}");
+			CallableStatement stmntList = con.prepareCall("{call SP_TIPO_ARTIGO_LISTAR()}");
 			
 			// Execução da query
-			rSetTipoArtigo = stmntCreate.executeQuery();
+			rSetTipoArtigo = stmntList.executeQuery();
+			
+			// Criação da lista de objetos:
+			while (rSetTipoArtigo.next()) {
+				ItemLista item = new ItemLista();                
+                // Conversão de um registo rSet para um objecto:
+                DBConverter.loadResultSetIntoObject(rSetTipoArtigo, item);
+                listaTipoArtigo.add(item);
+            }
+
 						
 			// Desconexão
 			conexaoDB.disconnect();
@@ -124,7 +142,7 @@ public class TipoArtigoHelper {
 			e.printStackTrace();
 		}
 		
-		return rSetTipoArtigo;
+		return listaTipoArtigo;
 	}
 	
 	

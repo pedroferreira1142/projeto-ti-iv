@@ -29,7 +29,7 @@ public class ArtigoHelper {
 		
 		try 
 		{
-			PreparedStatement stmntCreate = con.prepareCall("{call SP_ARTIGO_CRIAR(?,?,?,?,?,?,?,?,?,?,?)}");
+			PreparedStatement stmntCreate = con.prepareCall("{call SP_ARTIGO_CRIAR(?,?,?,?,?,?,?,?,?,?,?,?)}");
 			
 			// Atribuição dos valores ao statement
 			stmntCreate.setString(1, UUID.randomUUID().toString());

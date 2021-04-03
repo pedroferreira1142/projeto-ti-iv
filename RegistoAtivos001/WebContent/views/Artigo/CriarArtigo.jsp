@@ -75,11 +75,12 @@
                      <textarea  class="form-control" id="obs"
                         name="obs"></textarea>
                   </div>
+                  ${testeMensagem}
                   ${messageObs}
                   <div class="col-sm-12">
                      <label for="obs" class="form-label">Observações</label>
                      <select name="category">
-					    <c:forEach items="${listaEstados}" var="estado">
+						<c:forEach items="${listaEstados}" var="estado">
 					        <option value="${estado.uid}">${estado.item}</option>
 					    </c:forEach>
 					</select>

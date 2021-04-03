@@ -27,6 +27,7 @@ public class ItemCreateServlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
+	
     public ItemCreateServlet() 
     {
         super();
@@ -57,7 +58,7 @@ public class ItemCreateServlet extends HttpServlet {
 		}
 		
 		//response.sendRedirect("views/Artigo/CriarArtigo.jsp");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/Artigo/Index.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/Artigo/CriarArtigo.jsp");
 		dispatcher.forward(request, response);
 	}
 

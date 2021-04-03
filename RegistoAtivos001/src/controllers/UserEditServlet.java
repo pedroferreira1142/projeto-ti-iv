@@ -41,6 +41,7 @@ public class UserEditServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		response.sendRedirect("views/Utilizador/VerUtilizador.jsp");
+		request.setAttribute("testeMensagem", "Teste");
 	}
 
 	/**
@@ -68,6 +69,8 @@ public class UserEditServlet extends HttpServlet {
 		String email = request.getParameter("eMail");
 
 		String destPage = "views/Utilizador/VerUtilizador.jsp";
+		
+		
 		
 		RequestDispatcher dispatcher = null;
 

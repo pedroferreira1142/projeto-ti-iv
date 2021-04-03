@@ -31,11 +31,11 @@ public class UserViewServlet extends HttpServlet {
 		
 		//Utilizador u = (Utilizador) request.getAttribute("user");
 		
-		HttpSession session = request.getSession();
-		Utilizador u = (Utilizador) session.getAttribute("user");
+		//HttpSession session = request.getSession();
+		//Utilizador u = (Utilizador) session.getAttribute("user");
+		//request.setAttribute("testeMensagem", "Teste");
 		
-		
-		request.getRequestDispatcher("/WEB-INF/views/Utilizador/VerUtilizador.jsp").forward(request, response);
+		//request.getRequestDispatcher("views/Utilizador/VerUtilizador.jsp").forward(request, response);
 		
 	}
 	

@@ -95,7 +95,9 @@
                
                <button class="w-100 btn btn-primary btn-lg" type="submit">Registar</button>
             </div>
+            <%= request.getAttribute("testeMensagem")%>
          </form>
+         
       </main>
       <script src="${pageContext.request.contextPath}/js/form-validation.js"></script>
    </body>

@@ -2,13 +2,13 @@ package models;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.sql.PreparedStatement;
 
 public class ArtigoHelper {
 
@@ -116,14 +116,14 @@ public class ArtigoHelper {
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	*/
-	public List<ItemLista> listarArtigo() throws IllegalArgumentException, IllegalAccessException
+	public List<Artigo> listarArtigo() throws IllegalArgumentException, IllegalAccessException
 	{
-		// Conexão à DB
+		// Conexão à BD
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
 		
 		// Lista de tipos de movimento:
-		List<ItemLista> listaArtigo = new ArrayList<ItemLista>();
+		List<Artigo> listaArtigo = new ArrayList<Artigo>();
 		
 		// Tabela de dados
 		ResultSet rSetArtigo = null;
@@ -138,10 +138,10 @@ public class ArtigoHelper {
 			
 			// Criação da lista de objetos:
 			while (rSetArtigo.next()) {
-				ItemLista item = new ItemLista();                
+				Artigo a = new Artigo();                
                 // Conversão de um registo rSet para um objecto:
-                DBConverter.loadResultSetIntoObject(rSetArtigo, item);
-                listaArtigo.add(item);
+                DBConverter.loadResultSetIntoObject(rSetArtigo, a);
+                listaArtigo.add(a);
             }
 			
 			// Desconexão

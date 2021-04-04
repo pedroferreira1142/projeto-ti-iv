@@ -33,13 +33,13 @@ public class Artigo
 	@DBTable(nomeColuna ="dataCriacao")
 	private Date dataCriacao;
 	
-	@DBTable(nomeColuna ="dkIdUtilizador")
+	@DBTable(nomeColuna ="FK_IdUtilizador")
 	private String fkIdUtilizador;
 	
-	@DBTable(nomeColuna ="dkIdTipoArtigo")
+	@DBTable(nomeColuna ="FK_IdTipoArtigo")
 	private String fkIdTipoArtigo;
 	
-	@DBTable(nomeColuna ="fkIdEstado")
+	@DBTable(nomeColuna ="FK_IdEstado")
 	private String fkIdEstado;
 	
 	

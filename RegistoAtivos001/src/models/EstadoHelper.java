@@ -113,9 +113,7 @@ public class EstadoHelper {
 			
 			// Execução da query
 			rSetEstado = stmntList.executeQuery();			
-			
-			rSetEstado.getRow();
-			
+				
 			// Criação da lista de objetos:
 			while (rSetEstado.next()) {
 				ItemLista item = new ItemLista();                

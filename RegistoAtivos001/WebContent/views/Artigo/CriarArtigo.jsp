@@ -78,7 +78,7 @@
                   ${testeMensagem}
                   ${messageObs}
                   <div class="col-sm-6">
-                     <label for="estado" class="form-label">Observações </label>
+                     <label for="estado" class="form-label">Estado </label>
                      <select name="estado">
 						<c:forEach items="${listaEstados}" var="estado">
 					        <option value="${estado.uid}">${estado.item}</option>

@@ -126,7 +126,8 @@ public class TipoArtigoHelper {
 			rSetTipoArtigo = stmntList.executeQuery();
 			
 			// Criação da lista de objetos:
-			while (rSetTipoArtigo.next()) {
+			while (rSetTipoArtigo.next()) 
+			{
 				ItemLista item = new ItemLista();                
                 // Conversão de um registo rSet para um objecto:
                 DBConverter.loadResultSetIntoObject(rSetTipoArtigo, item);

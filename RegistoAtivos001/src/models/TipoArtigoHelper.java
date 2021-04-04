@@ -156,28 +156,34 @@ public class TipoArtigoHelper {
 	*  @throws IllegalAccessException 
 	*  @throws IllegalArgumentException
 	*/
-	public ItemLista getTipoArtigo(ItemLista tipoArtigo) throws IllegalArgumentException, IllegalAccessException
+	public ItemLista getTipoArtigo(String uidTipoArtigo) throws IllegalArgumentException, IllegalAccessException
 	{
+
 		// Conexão à BD
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
 		
+		ItemLista tipoArtigo = new ItemLista();
+		
 		// Tabela de dados
-		ResultSet rSetTipoArtigo = null;
+		ResultSet rSetEstado = null;
 		
 		try 
 		{
 			// Stored Procedure:
-			PreparedStatement stmntGet = con.prepareCall("{call SP_GET_ESTADO(?)}");
+			PreparedStatement stmntGet = con.prepareCall("{call SP_TIPO_ARTIGO_GET(?)}");
 			
 			// Atribuição dos valores ao statement:
-			stmntGet.setString(1, "valor ex: tipoArtigo.id");
+			stmntGet.setString(1, uidTipoArtigo);
 			
 			// Execução da query:
-			rSetTipoArtigo = stmntGet.executeQuery();
+			rSetEstado = stmntGet.executeQuery();
 			
-			// Conversão do resultSet para um ItemLista:
-			DBConverter.loadResultSetIntoObject(rSetTipoArtigo, tipoArtigo);
+			// Mover o cursos para o primeiro index 
+			rSetEstado.next();
+			
+			// Conversão de um resultSet para um (objecto)estado:
+			DBConverter.loadResultSetIntoObject(rSetEstado, tipoArtigo);
 						
 			// Desconexão:
 			conexaoDB.disconnect();

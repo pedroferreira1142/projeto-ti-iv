@@ -14,6 +14,10 @@ public class TesteMain {
 		EstadoHelper eHelper = new EstadoHelper();
 		UtilizadorHelper uHelper = new UtilizadorHelper(); 
 		Utilizador u = new Utilizador();
+		Artigo a = new Artigo();
+		ArtigoHelper aH = new ArtigoHelper();
+		
+		System.out.print(aH.getArtigo("2e32b130-c47e-462f-a216-9bc8e71e0650").getDescricao());
 		
 		// u.seteMail("pedroferreira1142@gmail.com");
 		

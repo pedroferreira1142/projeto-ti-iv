@@ -77,12 +77,12 @@ public class ArtigoHelper {
 		Connection con = conexaoDB.connect();
 		
 		// Tabela de dados
-		ResultSet rSetEstado = null;
+		ResultSet rSetArtigo = null;
 		
 		try 
 		{
 			// Stored Procedure:
-			CallableStatement stmntEdit = con.prepareCall("{call STORED_PROCEDURE_EDITAR(?)}");
+			CallableStatement stmntEdit = con.prepareCall("{call SP_ARTIGO_EDITAR(?)}");
 			
 			// Atribuição dos valores ao statement:
 			stmntEdit.setString(1, "valor ex: artigo.descricao");
@@ -91,8 +91,8 @@ public class ArtigoHelper {
 			stmntEdit.executeQuery();
 			
 			// Conversão do resultSet para um (objecto)Artigo:
-			if (rSetEstado.getRow() == 1)
-				DBConverter.loadResultSetIntoObject(rSetEstado, artigo);
+			if (rSetArtigo.getRow() == 1)
+				DBConverter.loadResultSetIntoObject(rSetArtigo, artigo);
 			else
 				// Throws error
 			
@@ -221,16 +221,17 @@ public class ArtigoHelper {
 			// Stored Procedure
 			CallableStatement stmntGet = con.prepareCall("{call SP_ARTIGO_GET(?)}");
 			
-			// Execução da query
-			rSetArtigo = stmntGet.executeQuery();
-			
 			// Atribuição do parametro do Stored Procedure
 			stmntGet.setString(1, uid);
 			
+			// Execução da query
+			rSetArtigo = stmntGet.executeQuery();
+			
+			//Primeira linha 
+			rSetArtigo.next();
+			
 			if (rSetArtigo.getRow() == 1)
 			{
-				//Primeira linha 
-				rSetArtigo.next();
 			
 				// Conversão do rSet num objecto
 				DBConverter.loadResultSetIntoObject(rSetArtigo, a);

@@ -143,11 +143,13 @@ public class EstadoHelper {
 	*  @throws IllegalAccessException 
 	*  @throws IllegalArgumentException
 	*/
-	public ItemLista getEstado(ItemLista estado) throws IllegalArgumentException, IllegalAccessException
+	public ItemLista getEstado(String uidEstado) throws IllegalArgumentException, IllegalAccessException
 	{
 		// Conexão à BD
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
+		
+		ItemLista estado = new ItemLista();
 		
 		// Tabela de dados
 		ResultSet rSetEstado = null;
@@ -158,7 +160,7 @@ public class EstadoHelper {
 			PreparedStatement stmntGet = con.prepareCall("{call SP_ESTADO_GET(?)}");
 			
 			// Atribuição dos valores ao statement:
-			stmntGet.setString(1, estado.getUid());
+			stmntGet.setString(1, uidEstado);
 			
 			// Execução da query:
 			rSetEstado = stmntGet.executeQuery();

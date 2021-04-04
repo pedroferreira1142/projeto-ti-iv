@@ -5,8 +5,7 @@
 <t:layout>
 
 	<jsp:body>
-        
+	
     </jsp:body>
-    
 </t:layout>
 

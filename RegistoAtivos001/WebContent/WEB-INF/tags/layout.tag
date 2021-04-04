@@ -1,22 +1,21 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@attribute name="header" fragment="true"%>
 <%@attribute name="footer" fragment="true"%>
+<%@attribute name="css" fragment="true" %>
+<%@attribute name="js" fragment="true" %>
 <!doctype html>
 <html lang="en">
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <!-- Bootstrap core CSS -->
-      <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+      
       <link href="${pageContext.request.contextPath}/css/form-validation.css" rel="stylesheet">
-      <!-- Font Awesome -->
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-	<!-- Google Fonts -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
-	<!-- Bootstrap core CSS -->
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
-	<!-- Material Design Bootstrap -->
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+      <link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+      <link href="${pageContext.request.contextPath}/css/dashboard.css" rel="stylesheet">
       <style>
          .bd-placeholder-img {
          font-size: 1.125rem;
@@ -31,11 +30,9 @@
          }
          }
       </style>
-      <!-- Custom styles for this template -->
-      <link href="${pageContext.request.contextPath}/css/dashboard.css" rel="stylesheet">
    </head>
    <body>
-      <header
+      <div id ="pageHeader"
          class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow navbar-expand-lg">
          <jsp:invoke fragment="header" />
          <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Imobilizados</a>
@@ -66,7 +63,7 @@
                }			
                %>
          </ul>
-      </header>
+      </div>
       <div class="container-fluid">
          <div class="row">
             <nav id="sidebarMenu"
@@ -86,7 +83,7 @@
                         <div class="collapse hide" id="home-collapse">
                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                               <li><a href="${pageContext.request.contextPath}/ItemCreateServlet" class="link-dark rounded nav-link"> 
-                              <span data-feather="chevron-right"></span> Criar Artigo
+                                 <span data-feather="chevron-right"></span> Criar Artigo
                                  </a>
                               </li>
                               <li><a href="${pageContext.request.contextPath}/ItemListServlet" class="link-dark rounded nav-link"> <span
@@ -143,22 +140,27 @@
          </div>
       </div>
       <script src="${pageContext.request.contextPath}/js/bootstrap.bundle.min.js"></script>
-      <script
-         src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
-         integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
-         crossorigin="anonymous"></script>
-      <script
-         src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
-         integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
-         crossorigin="anonymous"></script>
-      <script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
-      <!-- JQuery -->
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<!-- Bootstrap tooltips -->
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-	<!-- Bootstrap core JavaScript -->
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
-	<!-- MDB core JavaScript -->
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+		<script
+		   src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+		   integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+		   crossorigin="anonymous"></script>
+		<script
+		   src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+		   integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+		   crossorigin="anonymous"></script>
+		<script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+		<script>
+		 $(document).ready(function () {
+		  $('#dtBasicExample').DataTable({
+			  stateSave: true
+		  });
+		  $('.dataTables_length').addClass('bs-select');
+		});
+		</script>
    </body>
 </html>

@@ -6,7 +6,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+      <link href="${pageContext.request.contextPath}/css/form-validation.css" rel="stylesheet">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
 
     <style>
@@ -53,8 +54,8 @@
     <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
   </form>
 </main>
-
-
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.bundle.min.js"></script>
     
   </body>
 </html>

@@ -193,6 +193,62 @@ public class ArtigoHelper {
 	
 	}
 	
+	/**
+	*  Pesquisar artigo por uid
+	*  
+	*  @param String Uid
+	*  
+	*  @throws SQLException
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException
+	 * 
+	 *  @return Artigo
+	*/
+	public Artigo getArtigo(String uid) throws IllegalArgumentException, IllegalAccessException
+	{
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+		
+		// Tabela de dados
+		ResultSet rSetArtigo = null;
+		
+		//Instaciamento do artigo
+		Artigo a = new Artigo();
+		
+		try 
+		{
+			// Stored Procedure
+			CallableStatement stmntGet = con.prepareCall("{call SP_ARTIGO_GET(?)}");
+			
+			// Execução da query
+			rSetArtigo = stmntGet.executeQuery();
+			
+			// Atribuição do parametro do Stored Procedure
+			stmntGet.setString(1, uid);
+			
+			if (rSetArtigo.getRow() == 1)
+			{
+				//Primeira linha 
+				rSetArtigo.next();
+			
+				// Conversão do rSet num objecto
+				DBConverter.loadResultSetIntoObject(rSetArtigo, a);
+			}
+               
+			// Desconexão
+			conexaoDB.disconnect();
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return a;
+	
+	}
+	
 	
 	
 

@@ -50,7 +50,7 @@
 
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit">Entrar</button>
-    <a href="${pageContext.request.contextPath}/SignUpServlet">Não tem conta? Crie uma.</a>
+    <a class="nav-link" href="${pageContext.request.contextPath}/SignUpServlet">Não tem conta? Crie uma.</a>
     <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
   </form>
 </main>

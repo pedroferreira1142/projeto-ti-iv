@@ -66,6 +66,7 @@ public class ArtigoHelper {
 	*  Edição de um artigo
 	*  
 	*  @param Artigo
+	*  
 	*  @throws SQLException
 	*  @throws IllegalAccessException 
 	*  @throws IllegalArgumentException
@@ -76,25 +77,25 @@ public class ArtigoHelper {
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
 		
-		// Tabela de dados
-		ResultSet rSetArtigo = null;
-		
 		try 
 		{
 			// Stored Procedure:
-			CallableStatement stmntEdit = con.prepareCall("{call SP_ARTIGO_EDITAR(?)}");
+			CallableStatement stmntEdit = con.prepareCall("{call SP_ARTIGO_EDITAR(?,?,?,?,?,?,?,?,?,?)}");
 			
 			// Atribuição dos valores ao statement:
-			stmntEdit.setString(1, "valor ex: artigo.descricao");
+			stmntEdit.setString(1, artigo.getUid());
+			stmntEdit.setString(2, artigo.getDescricao());
+			stmntEdit.setString(3, artigo.getMarca());
+			stmntEdit.setString(4, artigo.getModelo());
+			stmntEdit.setString(5, artigo.getNumImobilizado());
+			stmntEdit.setString(6, artigo.getNumSerie());
+			stmntEdit.setString(7, artigo.getLocalStock());
+			stmntEdit.setString(8, artigo.getObs());
+			stmntEdit.setString(9, artigo.getFkIdTipoArtigo());
+			stmntEdit.setString(10, artigo.getFkIdEstado());
 				
 			// Execução da query:
 			stmntEdit.executeQuery();
-			
-			// Conversão do resultSet para um (objecto)Artigo:
-			if (rSetArtigo.getRow() == 1)
-				DBConverter.loadResultSetIntoObject(rSetArtigo, artigo);
-			else
-				// Throws error
 			
 			// Desconexão:
 			conexaoDB.disconnect();

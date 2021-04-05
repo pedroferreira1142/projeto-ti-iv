@@ -3,6 +3,9 @@
 <%@attribute name="footer" fragment="true"%>
 <%@attribute name="css" fragment="true" %>
 <%@attribute name="js" fragment="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
 <!doctype html>
 <html lang="en">
    <head>
@@ -34,9 +37,9 @@
    </head>
    <body>
       <div id ="pageHeader"
-         class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow navbar-expand-lg">
+         class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
          <jsp:invoke fragment="header" />
-         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Imobilizados</a>
+         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="${pageContext.request.contextPath}/index.jsp">Imobilizados</a>
          <button class="navbar-toggler position-absolute d-md-none collapsed"
             type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
             aria-controls="sidebarMenu" aria-expanded="false"
@@ -44,25 +47,20 @@
          <span class="navbar-toggler-icon"></span>
          </button>
          <input class="form-control form-control-dark w-100" type="text"
-            placeholder="Pesquisar um artigo" aria-label="Search">
+        	placeholder="Pesquisar um artigo" aria-label="Search" id="mySearchText">        
          <ul class="navbar-nav px-3">
             <li class="nav-item">
-               <% 
-                  if(session.getAttribute("user") == null)
-                  {
-                  	// Utilizador não fez login
-                  	%><a class="nav-link" href="/RegistoAtivos001/login.jsp">Login</a>
+	            <%if(session.getAttribute("user") == null)
+	          	{
+	           		// Utilizador não fez login
+	            	%><a class="nav-link" href="${pageContext.request.contextPath}/LoginServlet">Logout</a><%
+	            }
+	           	else
+	            {
+	               	// Utilizador está logado
+	               	%><a class="nav-link" href="${pageContext.request.contextPath}/LogoutServlet">Logout</a><%
+	            }%>
             </li>
-            <%
-               }
-               else
-               {
-               	// Utilizador está logado
-               	%>
-            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></li>
-            <%
-               }			
-               %>
          </ul>
       </div>
       <div class="container-fluid">
@@ -172,18 +170,34 @@
          $(document).ready(function () {
              // Create DataTable
              var table = $('#dtBasicExample').DataTable({
-                 dom: 'Pfrtip',
+            	 dom: 'lfPrtp',
+           		 language: {
+           		        search: "_INPUT_",            // Removes the 'Search' field label
+           		        searchPlaceholder: "Pesquisar um Artigo",   // Placeholder for the search box
+	           		     searchPanes: {
+	           	            layout: 'columns-6'
+	           	        },
+	                     columnDefs: [
+	                         {
+	                             searchPanes: {
+	                                 show: true
+	                             },
+	                             targets: [2, 3, 4, 5]
+	                         }
+	                     ]
+           		    }
+            	 
              });
           
              // Create the chart with initial data
-             var container = $('<div/>').insertBefore(table.table().container());
+             var container = $('<div/>').insertAfter(table.table().container());
           
              var chart = Highcharts.chart(container[0], {
                  chart: {
                      type: 'pie',
                  },
                  title: {
-                     text: 'Staff Count Per Position',
+                     text: 'Análise por Marca',
                  },
                  series: [
                      {
@@ -196,6 +210,8 @@
              table.on('draw', function () {
                  chart.series[0].setData(chartData(table));
              });
+             
+             
          });
           
          function chartData(table) {
@@ -220,6 +236,7 @@
                      y: val,
                  };
              });
+             
          }
       </script>
    </body>

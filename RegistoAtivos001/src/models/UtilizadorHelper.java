@@ -141,6 +141,47 @@ public class UtilizadorHelper {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	/**
+	 * Editar permissões de um utilizador
+	 * 
+	 * @param Utilizador
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
+	 * @throws SQLException
+	 */
+	public void editarTipoUtilizador(String eMail, int tipo) throws IllegalArgumentException, IllegalAccessException 
+	{
+		//Instaciamentos:
+		Utilizador u = new Utilizador();
+		
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+		
+		// Extrair o utilizador por eMail
+		u = this.getUtilizadorByEMail(eMail);
+
+		try {
+			// Stored Procedure
+			PreparedStatement stmntGet = con.prepareCall("{call SP_UTILIZADOR_EDITAR_TIPO(?,?)}");
+
+			// Atribuição dos valores ao statement
+			stmntGet.setString(1, eMail);
+			stmntGet.setInt(2, tipo);
+
+			// Execução da query
+			stmntGet.executeQuery();
+
+			// Desconexão
+			conexaoDB.disconnect();
+			
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Apagar um utilizador
@@ -254,6 +295,56 @@ public class UtilizadorHelper {
 		// Desconexão
 		conexaoDB.disconnect();
 
+	}
+	
+	/**
+	*  Listar utilizadores
+	*  
+	*  @throws SQLException
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException
+	 * 
+	 * @return listagem utilizadores 
+	*/
+	public List<Utilizador> listarUtilizador() throws IllegalArgumentException, IllegalAccessException
+	{
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+		
+		// Lista de tipos de movimento:
+		List<Utilizador> listaUtilizador = new ArrayList<Utilizador>();
+		
+		// Tabela de dados
+		ResultSet rSetUtilizador = null;
+		
+		try 
+		{
+			// Stored Procedure
+			CallableStatement stmntList = con.prepareCall("{call SP_UTILIZADOR_LISTAR()}");
+			
+			// Execução da query
+			rSetUtilizador = stmntList.executeQuery();
+			
+			// Criação da lista de objetos:
+			while (rSetUtilizador.next()) {
+				Utilizador u = new Utilizador();                
+                // Conversão de um registo rSet para um objecto:
+                DBConverter.loadResultSetIntoObject(rSetUtilizador, u);
+                listaUtilizador.add(u);
+            }
+			
+			// Desconexão
+			conexaoDB.disconnect();
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return listaUtilizador;
+	
 	}
 	
 	

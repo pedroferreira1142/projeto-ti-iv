@@ -41,7 +41,6 @@ public class UserEditServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		response.sendRedirect("views/Utilizador/VerUtilizador.jsp");
-		request.setAttribute("testeMensagem", "Teste");
 	}
 
 	/**

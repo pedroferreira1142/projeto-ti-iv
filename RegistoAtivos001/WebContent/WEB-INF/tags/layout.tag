@@ -4,8 +4,6 @@
 <%@attribute name="css" fragment="true" %>
 <%@attribute name="js" fragment="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-
 <!doctype html>
 <html lang="en">
    <head>
@@ -47,19 +45,19 @@
          <span class="navbar-toggler-icon"></span>
          </button>
          <input class="form-control form-control-dark w-100" type="text"
-        	placeholder="Pesquisar um artigo" aria-label="Search" id="mySearchText">        
+            placeholder="Pesquisar um artigo" aria-label="Search" id="mySearchText">        
          <ul class="navbar-nav px-3">
             <li class="nav-item">
-	            <%if(session.getAttribute("user") == null)
-	          	{
-	           		// Utilizador não fez login
-	            	%><a class="nav-link" href="${pageContext.request.contextPath}/LoginServlet">Logout</a><%
-	            }
-	           	else
-	            {
-	               	// Utilizador está logado
-	               	%><a class="nav-link" href="${pageContext.request.contextPath}/LogoutServlet">Logout</a><%
-	            }%>
+               <%if(session.getAttribute("user") == null)
+                  {
+                  		// Utilizador não fez login
+                   	%><a class="nav-link" href="${pageContext.request.contextPath}/LoginServlet">Logout</a><%
+                  }
+                  else
+                  {
+                     	// Utilizador está logado
+                     	%><a class="nav-link" href="${pageContext.request.contextPath}/LogoutServlet">Logout</a><%
+                  }%>
             </li>
          </ul>
       </div>
@@ -125,16 +123,36 @@
                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                               <li><a href="${pageContext.request.contextPath}/EditUserServlet"
                                  class="link-dark rounded nav-link"> <span
-                                 data-feather="settings"></span> Atualizar Informações
+                                 data-feather="chevron-right"></span> Atualizar Informações
                                  </a>
                               </li>
                               <li><a href="${pageContext.request.contextPath}/EditPasswordServlet" 
                                  class="link-dark rounded nav-link"> <span
-                                 data-feather="lock"></span> Mudar Password
+                                 data-feather="chevron-right"></span> Mudar Password
                                  </a>
                               </li>
                               <li><a href="#" class="link-dark rounded nav-link"> <span
-                                 data-feather="user-minus"></span> Apagar Conta
+                                 data-feather="chevron-right"></span> Apagar Conta
+                                 </a>
+                              </li>
+                           </ul>
+                        </div>
+                     </li>
+                     <li class="nav-item collapse show">
+                        <a
+                           class="btn-toggle collapsed nav-link" data-bs-toggle="collapse"
+                           data-bs-target="#backOffice-collapse" aria-expanded="false"> <span
+                           data-feather="tool"></span> Back Office</a>
+                        <div class="collapse hide" id="backOffice-collapse">
+                           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                              <li><a href="${pageContext.request.contextPath}/UserListServlet"
+                                 class="link-dark rounded nav-link"> <span
+                                 data-feather="chevron-right"></span> Utilizadores
+                                 </a>
+                              </li>
+                              <li><a href="${pageContext.request.contextPath}/BackOfficeSelectListServlet" 
+                                 class="link-dark rounded nav-link"> <span
+                                 data-feather="chevron-right"></span> Conteúdo da página
                                  </a>
                               </li>
                            </ul>
@@ -168,76 +186,89 @@
       <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>		
       <script>
          $(document).ready(function () {
+                // Create DataTable
+                var table = $('#dtBasicExample').DataTable({
+               	 dom: 'lfPrtp',
+              		 language: {
+              		        search: "_INPUT_",            // Removes the 'Search' field label
+              		        searchPlaceholder: "Pesquisar um Artigo",   // Placeholder for the search box
+                  		     searchPanes: {
+                  	            layout: 'columns-6'
+                  	        },
+                            columnDefs: [
+                                {
+                                    searchPanes: {
+                                        show: true
+                                    },
+                                    targets: [2, 3, 4, 5]
+                                }
+                            ]
+              		    }
+               	 
+                });
+                
              // Create DataTable
-             var table = $('#dtBasicExample').DataTable({
-            	 dom: 'lfPrtp',
-           		 language: {
-           		        search: "_INPUT_",            // Removes the 'Search' field label
-           		        searchPlaceholder: "Pesquisar um Artigo",   // Placeholder for the search box
-	           		     searchPanes: {
-	           	            layout: 'columns-6'
-	           	        },
-	                     columnDefs: [
-	                         {
-	                             searchPanes: {
-	                                 show: true
-	                             },
-	                             targets: [2, 3, 4, 5]
-	                         }
-	                     ]
-           		    }
-            	 
-             });
-          
-             // Create the chart with initial data
-             var container = $('<div/>').insertAfter(table.table().container());
-          
-             var chart = Highcharts.chart(container[0], {
-                 chart: {
-                     type: 'pie',
-                 },
-                 title: {
-                     text: 'Análise por Marca',
-                 },
-                 series: [
-                     {
-                         data: chartData(table),
-                     },
-                 ],
-             });
-          
-             // On each draw, update the data in the chart
-             table.on('draw', function () {
-                 chart.series[0].setData(chartData(table));
-             });
+        	   	$(document).ready(function() {
+        	    	$('#dtListarUtilizadores').DataTable();
+        		} );
              
+                // Create the chart with initial data
+                var container = $('<div/>').insertAfter(table.table().container());
              
-         });
-          
-         function chartData(table) {
-             var counts = {};
-          
-             // Count the number of entries for each position
-             table
-                 .column(1, { search: 'applied' })
-                 .data()
-                 .each(function (val) {
-                     if (counts[val]) {
-                         counts[val] += 1;
-                     } else {
-                         counts[val] = 1;
-                     }
-                 });
-          
-             // And map it to the format highcharts uses
-             return $.map(counts, function (val, key) {
-                 return {
-                     name: key,
-                     y: val,
-                 };
-             });
+                var chart = Highcharts.chart(container[0], {
+                    chart: {
+                        type: 'pie',
+                    },
+                    title: {
+                        text: 'Análise por Marca',
+                    },
+                    series: [
+                        {
+                            data: chartData(table),
+                        },
+                    ],
+                });
              
-         }
+                // On each draw, update the data in the chart
+                table.on('draw', function () {
+                    chart.series[0].setData(chartData(table));
+                });
+                
+                             
+            });
+             
+            function chartData(table) {
+                var counts = {};
+             
+                // Count the number of entries for each position
+                table
+                    .column(1, { search: 'applied' })
+                    .data()
+                    .each(function (val) {
+                        if (counts[val]) {
+                            counts[val] += 1;
+                        } else {
+                            counts[val] = 1;
+                        }
+                    });
+             
+                // And map it to the format highcharts uses
+                return $.map(counts, function (val, key) {
+                    return {
+                        name: key,
+                        y: val,
+                    };
+                });
+                
+            }
+            
+             
+            
+            
+       
       </script>
+      <div id ="pageFooter">
+         <jsp:invoke fragment="footer" />
+       </div>
    </body>
 </html>

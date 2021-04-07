@@ -38,6 +38,8 @@ public class Utilizador {
 	@DBTable(nomeColuna ="nuc")
 	private String nuc;
 	
+	@DBTable(nomeColuna ="tipo")
+	private int tipo;
 	
 	// Getters and Setters
 	public String getUid() {
@@ -96,7 +98,12 @@ public class Utilizador {
 	public void setNuc(String nuc) {
 		this.nuc = nuc;
 	}
-	
+	public int getTipo() {
+		return tipo;
+	}
+	public void setTipo(int tipo) {
+		this.tipo = tipo;
+	}
 	
 	
 	

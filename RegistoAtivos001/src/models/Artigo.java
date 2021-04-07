@@ -43,6 +43,7 @@ public class Artigo
 	private String fkIdEstado;
 	
 	
+	
 	//Getters and setters
 	public String getUid() {
 		return uid;
@@ -116,6 +117,8 @@ public class Artigo
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
+	
+	
 	
 	
 }

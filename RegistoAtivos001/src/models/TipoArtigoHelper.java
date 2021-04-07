@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class TipoArtigoHelper {
 	
@@ -18,20 +19,21 @@ public class TipoArtigoHelper {
 	*/
 	public void criarTipoArtigo(ItemLista tipoArtigo) 
 	{
+		// UUID
+		String uniqueID = null;
+		
 		// Conexão à BD
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
 		
-		// Lista de tipos de movimento:
-		List<ItemLista> listaEstado = new ArrayList<ItemLista>();
-		
 		try 
 		{
 			// Stored Procedure
-			PreparedStatement stmntCreate = con.prepareCall("{call STORED_PROCEDURE_CRIAR_TIPO_ARTIGO(?)}");
+			PreparedStatement stmntCreate = con.prepareCall("{call SP_TIPO_ARTIGO_CRIAR(?,?)}");
 			
 			// Atribuição dos valores ao statement
-			stmntCreate.setString(1, "valor ex: tipoArtigo.id");
+			stmntCreate.setString(1, uniqueID = UUID.randomUUID().toString());
+			stmntCreate.setString(2, tipoArtigo.getItem());
 			
 			// Execução da query
 			stmntCreate.executeQuery();
@@ -54,36 +56,23 @@ public class TipoArtigoHelper {
 	*  @throws IllegalAccessException 
 	*  @throws IllegalArgumentException
 	*/
-	public List<ItemLista> editarTipoArtigo() throws IllegalArgumentException, IllegalAccessException
+	public ItemLista editarTipoArtigo(ItemLista tipoArtigo) throws IllegalArgumentException, IllegalAccessException
 	{
 		// Conexão à BD
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
 		
-		// Lista de tipos de movimento:
-		List<ItemLista> listaTipoArtigo = new ArrayList<ItemLista>();
-		
-		// Tabela de dados
-		ResultSet rSetTipoArtigo = null;
-		
 		try 
 		{
 			// Stored Procedure
-			PreparedStatement stmntCreate = con.prepareCall("{call STORED_PROCEDURE_EDITAR_TIPO_ARTIGO(?)}");
+			PreparedStatement stmntEdit = con.prepareCall("{call SP_TIPO_ARTIGO_EDITAR(?, ?)}");
 			
 			// Atribuição dos valores ao statement
-			stmntCreate.setString(1, "valor ex: tipoArtigo.id");
+			stmntEdit.setString(1, tipoArtigo.getUid());
+			stmntEdit.setString(2, tipoArtigo.getItem());
 			
 			// Execução da query
-			rSetTipoArtigo = stmntCreate.executeQuery();
-			
-			// Criação da lista de objetos:
-			while (rSetTipoArtigo.next()) {
-                ItemLista item = new ItemLista();
-                // Conversão de um registo rSet para um objecto:
-                DBConverter.loadResultSetIntoObject(rSetTipoArtigo, item);
-                listaTipoArtigo.add(item);
-            }
+			stmntEdit.executeQuery();
 			
 			// Desconexão
 			conexaoDB.disconnect();
@@ -92,7 +81,7 @@ public class TipoArtigoHelper {
 		{
 			e.printStackTrace();
 		}
-		return listaTipoArtigo; 
+		return tipoArtigo; 
 	}
 	
 	
@@ -148,11 +137,11 @@ public class TipoArtigoHelper {
 	
 	
 	/**
-	*  Obter um estado
+	*  Obter um tipo de Artigo
 	*  
 	*  @param ItemLista
 	*  @throws SQLException
-	*  @return ResultSet ItemLista
+	*  @return ItemLista
 	*  @throws IllegalAccessException 
 	*  @throws IllegalArgumentException
 	*/

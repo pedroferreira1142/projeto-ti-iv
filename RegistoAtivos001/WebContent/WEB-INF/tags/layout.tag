@@ -19,6 +19,15 @@
       <link href="https://cdn.datatables.net/searchpanes/1.2.1/css/searchPanes.dataTables.min.css" rel="stylesheet">
       <link href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css" rel="stylesheet">
       <style>
+      label, input { display:block; }
+    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    fieldset { padding:0; border:0; margin-top:25px; }
+    h1 { font-size: 1.2em; margin: .6em 0; }
+    div#users-contain { width: 350px; margin: 20px 0; }
+    div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+    div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+    .ui-dialog .ui-state-error { padding: .3em; }
+    .validateTips { border: 1px solid transparent; padding: 0.3em; }
          .bd-placeholder-img {
          font-size: 1.125rem;
          text-anchor: middle;
@@ -150,7 +159,7 @@
                                  data-feather="chevron-right"></span> Utilizadores
                                  </a>
                               </li>
-                              <li><a href="${pageContext.request.contextPath}/BackOfficeSelectListServlet" 
+                              <li><a href="${pageContext.request.contextPath}/BOSelectListEditorServlet" 
                                  class="link-dark rounded nav-link"> <span
                                  data-feather="chevron-right"></span> Conteúdo da página
                                  </a>
@@ -166,6 +175,7 @@
             </main>
          </div>
       </div>
+      
       <script src="${pageContext.request.contextPath}/js/bootstrap.bundle.min.js"></script>
       <script
          src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
@@ -203,7 +213,8 @@
                                     targets: [2, 3, 4, 5]
                                 }
                             ]
-              		    }
+              		    },
+              		  scrollX: true
                	 
                 });
                 
@@ -262,11 +273,48 @@
                 
             }
             
-             
+            // Selecionar Tipo de movimento
+            function funcSelectItemTipoMovimento(ele) {  
+				document.getElementById("tipoMovimentoOld").value = ele;
+			}
             
+         	// Selecionar Tipo de Artigo
+            function funcSelectItemTipoArtigo(ele) {  
+				document.getElementById("tipoArtigoOld").value = ele;
+			}
+         
+         // Selecionar Estado
+            function funcSelectItemEstado(ele) {  
+				document.getElementById("estadoOld").value = ele.text;
+				document.getElementById("uidEstado").value = ele.dataset.uid;
+			}
             
-       
+            // Confirmação do delete do Tipo de movimento
+            function confirmDeleleTipoMovimento(ele)
+            {
+            	var r = confirm("Tem a certeza que pretende apagar o item?");
+            	if (r == true) {
+            	 ele.href = "${pageContext.request.contextPath}/BODeleteListTipoMovimentoServlet?idTipoMovimento=${tipoMovimento.uid}";
+            	}
+            }
+            
+            function confirmDeleleTipoArtigo(ele)
+            {
+            	var r = confirm("Tem a certeza que pretende apagar o item?");
+            	if (r == true) {
+            	 ele.href = "${pageContext.request.contextPath}/BODeleteListTipoArtigoServlet?idTipoMovimento=${tipoArtigo.uid}";
+            	}
+            }
+            
+            function confirmDeleleEstado(ele)
+            {
+            	var r = confirm("Tem a certeza que pretende apagar o item?");
+            	if (r == true) {
+            	 ele.href = "${pageContext.request.contextPath}/BODeleteListEstadoServlet?idEstado=${estado.uid}";
+            	}
+            }
       </script>
+      
       <div id ="pageFooter">
          <jsp:invoke fragment="footer" />
        </div>

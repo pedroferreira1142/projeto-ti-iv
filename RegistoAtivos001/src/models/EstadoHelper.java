@@ -183,6 +183,42 @@ public class EstadoHelper {
 	}
 	
 	
+	/**
+	*  Apagar um estado
+	*  
+	*  @param String Uid
+	*  @throws SQLException
+	*  @return void
+	*  @throws IllegalAccessException 
+	*  @throws IllegalArgumentException
+	*/
+	public void apagarEstado(String uidEstado) throws IllegalArgumentException, IllegalAccessException
+	{
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+		
+		try 
+		{
+			// Stored Procedure:
+			PreparedStatement stmntGet = con.prepareCall("{call SP_ESTADO_APAGAR(?)}");
+			
+			// Atribuição dos valores ao statement:
+			stmntGet.setString(1, uidEstado);
+			
+			// Execução da query:
+			stmntGet.executeQuery();
+						
+			// Desconexão:
+			conexaoDB.disconnect();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	
 	
 	
 }

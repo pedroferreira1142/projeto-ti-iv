@@ -115,7 +115,7 @@ public class TipoMovimentoHelper {
 		try 
 		{
 			// Stored Procedure:
-			PreparedStatement stmntEdit = con.prepareCall("{call SP_EDITAR_TIPO_MOVIMENTO(?)}");
+			PreparedStatement stmntEdit = con.prepareCall("{call SP_TIPO_MOVIMENTO_EDITAR(?,?)}");
 			
 			// Atribuição dos valores ao statement:
 			stmntEdit.setString(1, tipoMovimento.getUid());
@@ -179,5 +179,42 @@ public class TipoMovimentoHelper {
 		}
 		return tipoMovimento;
 		
+	}
+	
+	
+	/**
+	*  Apagar um tipo de movimento
+	*  
+	*  @param String Uid
+	*  @return void
+	*  
+	*  @throws SQLException
+	*  @throws IllegalAccessException 
+	*  @throws IllegalArgumentException
+	*/
+	public void apagarTipoMovimento(String uidTipoMovimento) throws IllegalArgumentException, IllegalAccessException
+	{
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+		
+		try 
+		{
+			// Stored Procedure:
+			PreparedStatement stmntGet = con.prepareCall("{call SP_TIPO_MOVIMENTO_APAGAR(?)}");
+			
+			// Atribuição dos valores ao statement:
+			stmntGet.setString(1, uidTipoMovimento);
+			
+			// Execução da query:
+			stmntGet.executeQuery();
+						
+			// Desconexão:
+			conexaoDB.disconnect();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 }

@@ -184,4 +184,41 @@ public class TipoArtigoHelper {
 		
 		return tipoArtigo;
 	}
+	
+	
+	/**
+	*  Apagar um tipo de artigo
+	*  
+	*  @param String Uid
+	*  @return void
+	*  
+	*  @throws SQLException
+	*  @throws IllegalAccessException 
+	*  @throws IllegalArgumentException
+	*/
+	public void apagarTipoArtigo(String uidTipoArtigo) throws IllegalArgumentException, IllegalAccessException
+	{
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+		
+		try 
+		{
+			// Stored Procedure:
+			PreparedStatement stmntGet = con.prepareCall("{call SP_TIPO_ARTIGO_APAGAR(?)}");
+			
+			// Atribuição dos valores ao statement:
+			stmntGet.setString(1, uidTipoArtigo);
+			
+			// Execução da query:
+			stmntGet.executeQuery();
+						
+			// Desconexão:
+			conexaoDB.disconnect();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 }

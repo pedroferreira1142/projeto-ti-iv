@@ -196,32 +196,36 @@
       <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>		
       <script>
          $(document).ready(function () {
-                // Create DataTable
-                var table = $('#dtBasicExample').DataTable({
-               	 dom: 'lfPrtp',
-              		 language: {
-              		        search: "_INPUT_",            // Removes the 'Search' field label
-              		        searchPlaceholder: "Pesquisar um Artigo",   // Placeholder for the search box
-                  		     searchPanes: {
-                  	            layout: 'columns-6'
-                  	        },
-                            columnDefs: [
-                                {
-                                    searchPanes: {
-                                        show: true
-                                    },
-                                    targets: [2, 3, 4, 5]
-                                }
-                            ]
-              		    },
-              		  scrollX: true
-               	 
-                });
+        	 $('#dtListarUtilizadores').DataTable();                
+        	 $('table.dtListarConteudo').DataTable();
+        	 // Create DataTable
+             var table = $('#dtBasicExample').DataTable({
+            	 dom: 'lfPrtp',
+           		 language: {
+           		        search: "_INPUT_",            // Removes the 'Search' field label
+           		        searchPlaceholder: "Pesquisar um Artigo",   // Placeholder for the search box
+               		     searchPanes: {
+               	            layout: 'columns-6'
+               	        },
+                         columnDefs: [
+                             {
+                                 searchPanes: {
+                                     show: true
+                                 },
+                                 targets: [2, 3, 4, 5]
+                             }
+                         ]
+           		    },
+           		  scrollX: true
+            	 
+             });
+                
+               
                 
              // Create DataTable
-        	   	$(document).ready(function() {
-        	    	$('#dtListarUtilizadores').DataTable();
-        		} );
+        	   	//$(document).ready(function() {
+        	    	
+        		//} );
              
                 // Create the chart with initial data
                 var container = $('<div/>').insertAfter(table.table().container());
@@ -275,12 +279,14 @@
             
             // Selecionar Tipo de movimento
             function funcSelectItemTipoMovimento(ele) {  
-				document.getElementById("tipoMovimentoOld").value = ele;
+				document.getElementById("tipoMovimentoOld").value = ele.text;
+				document.getElementById("uidTipoMovimento").value = ele.dataset.uid;
 			}
             
          	// Selecionar Tipo de Artigo
             function funcSelectItemTipoArtigo(ele) {  
-				document.getElementById("tipoArtigoOld").value = ele;
+				document.getElementById("tipoArtigoOld").value = ele.text;
+				document.getElementById("uidTipoArtigo").value = ele.dataset.uid; //data-uid="tipoArtigo.uid"
 			}
          
          // Selecionar Estado
@@ -294,7 +300,8 @@
             {
             	var r = confirm("Tem a certeza que pretende apagar o item?");
             	if (r == true) {
-            	 ele.href = "${pageContext.request.contextPath}/BODeleteListTipoMovimentoServlet?idTipoMovimento=${tipoMovimento.uid}";
+
+            	 ele.parentElement.action = "${pageContext.request.contextPath}/BODeleteTipoMovimentoServlet?idTipoMovimento="+ele.value;
             	}
             }
             
@@ -302,7 +309,7 @@
             {
             	var r = confirm("Tem a certeza que pretende apagar o item?");
             	if (r == true) {
-            	 ele.href = "${pageContext.request.contextPath}/BODeleteListTipoArtigoServlet?idTipoMovimento=${tipoArtigo.uid}";
+            	 ele.parentElement.action = "${pageContext.request.contextPath}/BODeleteTipoArtigoServlet?idTipoArtigo="+ele.value;
             	}
             }
             
@@ -310,7 +317,7 @@
             {
             	var r = confirm("Tem a certeza que pretende apagar o item?");
             	if (r == true) {
-            	 ele.href = "${pageContext.request.contextPath}/BODeleteListEstadoServlet?idEstado=${estado.uid}";
+            		ele.parentElement.action = "${pageContext.request.contextPath}/BODeleteListEstadoServlet?idEstado="+ele.value;
             	}
             }
       </script>

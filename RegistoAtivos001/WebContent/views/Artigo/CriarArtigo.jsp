@@ -79,7 +79,7 @@
                   ${messageObs}
                   <div class="col-sm-6">
                      <label for="estado" class="form-label">Estado </label>
-                     <select name="estado">
+                     <select name="estado" class="form-select">
 						<c:forEach items="${listaEstados}" var="estado">
 					        <option value="${estado.uid}">${estado.item}</option>
 					    </c:forEach>
@@ -87,7 +87,7 @@
                   </div>
                   <div class="col-sm-6">
                      <label for="tipoArtigo" class="form-label">Tipo de Artigo </label>
-                     <select name="tipoArtigo">
+                     <select name="tipoArtigo" class="form-select">
 						<c:forEach items="${listaTipoArtigos}" var="tipoArtigo">
 					        <option value="${tipoArtigo.uid}">${tipoArtigo.item}</option>
 					    </c:forEach>

@@ -12,27 +12,24 @@ import java.util.UUID;
 
 public class ArtigoHelper {
 
-		
 	/**
-	*  Criação de um artigo
-	*  
-	*  @param Artigo
-	*  @throws SQLException
-	*/
-	public void criarArtigo(Artigo artigo) 
-	{
+	 * Criação de um artigo
+	 * 
+	 * @param Artigo
+	 * @throws SQLException
+	 */
+	public void criarArtigo(Artigo artigo) {
 		// Conexão à BD
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
-		
+
 		// Data atual
 		Date date = new Date();
 		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-		
-		try 
-		{
+
+		try {
 			PreparedStatement stmntCreate = con.prepareCall("{call SP_ARTIGO_CRIAR(?,?,?,?,?,?,?,?,?,?,?,?)}");
-			
+
 			// Atribuição dos valores ao statement
 			stmntCreate.setString(1, UUID.randomUUID().toString());
 			stmntCreate.setString(2, artigo.getDescricao());
@@ -46,42 +43,36 @@ public class ArtigoHelper {
 			stmntCreate.setString(10, artigo.getFkIdUtilizador());
 			stmntCreate.setString(11, artigo.getFkIdTipoArtigo());
 			stmntCreate.setString(12, artigo.getFkIdEstado());
-			
-			
+
 			// Execução da query
 			stmntCreate.executeQuery();
-						
+
 			// Desconexão
 			conexaoDB.disconnect();
-		} 
-		catch (SQLException e) 
-		{
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
+
 	}
-	
+
 	/**
-	*  Edição de um artigo
-	*  
-	*  @param Artigo
-	*  
-	*  @throws SQLException
-	*  @throws IllegalAccessException 
-	*  @throws IllegalArgumentException
-	*/
-	public Artigo editarArtigo(Artigo artigo) throws IllegalArgumentException, IllegalAccessException
-	{
+	 * Edição de um artigo
+	 * 
+	 * @param Artigo
+	 * 
+	 * @throws SQLException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 */
+	public Artigo editarArtigo(Artigo artigo) throws IllegalArgumentException, IllegalAccessException {
 		// Conexão à bd
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
-		
-		try 
-		{
+
+		try {
 			// Stored Procedure:
 			CallableStatement stmntEdit = con.prepareCall("{call SP_ARTIGO_EDITAR(?,?,?,?,?,?,?,?,?,?)}");
-			
+
 			// Atribuição dos valores ao statement:
 			stmntEdit.setString(1, artigo.getUid());
 			stmntEdit.setString(2, artigo.getDescricao());
@@ -93,165 +84,196 @@ public class ArtigoHelper {
 			stmntEdit.setString(8, artigo.getObs());
 			stmntEdit.setString(9, artigo.getFkIdTipoArtigo());
 			stmntEdit.setString(10, artigo.getFkIdEstado());
-				
+
 			// Execução da query:
 			stmntEdit.executeQuery();
-			
+
 			// Desconexão:
 			conexaoDB.disconnect();
-		} 
-		catch (SQLException e) 
-		{
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return artigo;
 	}
-	
-	
+
 	/**
-	*  Listar artigos
-	*  
-	*  @param Artigo
-	*  @throws SQLException
-	*  @return listagem artigos
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
-	*/
-	public List<Artigo> listarArtigo() throws IllegalArgumentException, IllegalAccessException
-	{
+	 * Listar artigos
+	 * 
+	 * @param Artigo
+	 * @throws SQLException
+	 * @return listagem artigos
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 */
+	public List<Artigo> listarArtigo() throws IllegalArgumentException, IllegalAccessException {
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+
+		// Lista de tipos de movimento:
+		List<Artigo> listaArtigo = new ArrayList<Artigo>();
+
+		// Tabela de dados
+		ResultSet rSetArtigo = null;
+
+		try {
+			// Stored Procedure
+			CallableStatement stmntList = con.prepareCall("{call SP_ARTIGO_LISTAR()}");
+
+			// Execução da query
+			rSetArtigo = stmntList.executeQuery();
+
+			// Criação da lista de objetos:
+			while (rSetArtigo.next()) {
+				Artigo a = new Artigo();
+				// Conversão de um registo rSet para um objecto:
+				DBConverter.loadResultSetIntoObject(rSetArtigo, a);
+				listaArtigo.add(a);
+			}
+
+			// Desconexão
+			conexaoDB.disconnect();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return listaArtigo;
+
+	}
+
+	/**
+	 * Apagar um artigo
+	 * 
+	 * @param Artigo
+	 * @throws SQLException
+	 */
+	public void apagarArtigo(Artigo artigo) {
+		// Conexão à bd
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+
+		try {
+			// Stored Procedure
+			CallableStatement stmntDelete = con.prepareCall("{call STORED_PROCEDURE_APAGAR_ARTIGO(?)}");
+
+			// Atribuição dos valores ao statement
+			stmntDelete.setString(1, "valor ex: artigo.id");
+
+			// Execução da query
+			stmntDelete.executeQuery();
+
+			// Desconexão
+			conexaoDB.disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Pesquisar artigo por uid
+	 * 
+	 * @param String Uid
+	 * 
+	 * @throws SQLException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * 
+	 * @return Artigo
+	 */
+	public Artigo getArtigo(String uid) throws IllegalArgumentException, IllegalAccessException {
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+
+		// Tabela de dados
+		ResultSet rSetArtigo = null;
+
+		// Instaciamento do artigo
+		Artigo a = new Artigo();
+
+		try {
+			// Stored Procedure
+			CallableStatement stmntGet = con.prepareCall("{call SP_ARTIGO_GET(?)}");
+
+			// Atribuição do parametro do Stored Procedure
+			stmntGet.setString(1, uid);
+
+			// Execução da query
+			rSetArtigo = stmntGet.executeQuery();
+
+			// Primeira linha
+			rSetArtigo.next();
+
+			if (rSetArtigo.getRow() == 1) {
+
+				// Conversão do rSet num objecto
+				DBConverter.loadResultSetIntoObject(rSetArtigo, a);
+			}
+
+			// Desconexão
+			conexaoDB.disconnect();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return a;
+
+	}
+
+	/**
+	 * Pesquisar artigo por uid
+	 * 
+	 * @param String Uid
+	 * 
+	 * @throws SQLException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * 
+	 * @return Artigo
+	 */
+	public List<Artigo> pesquisarArtigo(String stringPesquisa) throws IllegalArgumentException, IllegalAccessException {
 		// Conexão à BD
 		ConexaoDB conexaoDB = new ConexaoDB();
 		Connection con = conexaoDB.connect();
 		
 		// Lista de tipos de movimento:
-		List<Artigo> listaArtigo = new ArrayList<Artigo>();
-		
+		List<Artigo> listaArtigoPesquisado = new ArrayList<Artigo>();
+
 		// Tabela de dados
 		ResultSet rSetArtigo = null;
-		
-		try 
-		{
-			// Stored Procedure
-			CallableStatement stmntList = con.prepareCall("{call SP_ARTIGO_LISTAR()}");
-			
-			// Execução da query
-			rSetArtigo = stmntList.executeQuery();
-			
-			// Criação da lista de objetos:
-			while (rSetArtigo.next()) {
-				Artigo a = new Artigo();                
-                // Conversão de um registo rSet para um objecto:
-                DBConverter.loadResultSetIntoObject(rSetArtigo, a);
-                listaArtigo.add(a);
-            }
-			
-			// Desconexão
-			conexaoDB.disconnect();
-			
-		} 
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
-		
-		return listaArtigo;
-	
-	}
-	
-	
-	
-	
-	/**
-	*  Apagar um artigo
-	*  
-	*  @param Artigo
-	*  @throws SQLException
-	*/
-	public void apagarArtigo(Artigo artigo)
-	{
-		// Conexão à bd
-		ConexaoDB conexaoDB = new ConexaoDB();
-		Connection con = conexaoDB.connect();
-		
-		try 
-		{
-			// Stored Procedure
-			CallableStatement stmntDelete = con.prepareCall("{call STORED_PROCEDURE_APAGAR_ARTIGO(?)}");
-			
-			// Atribuição dos valores ao statement
-			stmntDelete.setString(1, "valor ex: artigo.id");
-			
-			// Execução da query
-			stmntDelete.executeQuery();
-			
-			// Desconexão
-			conexaoDB.disconnect();
-		} 
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
-	
-	}
-	
-	/**
-	*  Pesquisar artigo por uid
-	*  
-	*  @param String Uid
-	*  
-	*  @throws SQLException
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException
-	 * 
-	 *  @return Artigo
-	*/
-	public Artigo getArtigo(String uid) throws IllegalArgumentException, IllegalAccessException
-	{
-		// Conexão à BD
-		ConexaoDB conexaoDB = new ConexaoDB();
-		Connection con = conexaoDB.connect();
-		
-		// Tabela de dados
-		ResultSet rSetArtigo = null;
-		
-		//Instaciamento do artigo
+
+		// Instaciamento do artigo
 		Artigo a = new Artigo();
-		
-		try 
-		{
+
+		try {
 			// Stored Procedure
-			CallableStatement stmntGet = con.prepareCall("{call SP_ARTIGO_GET(?)}");
-			
+			CallableStatement stmntGet = con.prepareCall("{call SP_ARTIGO_PESQUISA(?)}");
+
 			// Atribuição do parametro do Stored Procedure
-			stmntGet.setString(1, uid);
-			
+			stmntGet.setString(1, stringPesquisa);
+
 			// Execução da query
 			rSetArtigo = stmntGet.executeQuery();
-			
-			//Primeira linha 
-			rSetArtigo.next();
-			
-			if (rSetArtigo.getRow() == 1)
-			{
-			
-				// Conversão do rSet num objecto
-				DBConverter.loadResultSetIntoObject(rSetArtigo, a);
+
+			// Criação da lista de objetos:
+			while (rSetArtigo.next()) {
+				Artigo artigoPesquisado = new Artigo();
+				// Conversão de um registo rSet para um objecto:
+				DBConverter.loadResultSetIntoObject(rSetArtigo, artigoPesquisado);
+				listaArtigoPesquisado.add(artigoPesquisado);
 			}
-               
 			// Desconexão
 			conexaoDB.disconnect();
-			
-		} 
-		catch (SQLException e) 
-		{
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		return a;
-	
+
+		return listaArtigoPesquisado;
+
 	}
-	
-	
-	
 
 }

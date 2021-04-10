@@ -53,8 +53,9 @@
             aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
          </button>
-         <input class="form-control form-control-dark w-100" type="text"
-            placeholder="Pesquisar um artigo" aria-label="Search" id="mySearchText">        
+       	<input class="form-control form-control-dark w-100" type="text"
+           	placeholder="Pesquisar um artigo" aria-label="Search" id="mySearchText" onclick="pesquisarArtigo(this);">
+           	      
          <ul class="navbar-nav px-3">
             <li class="nav-item">
                <%if(session.getAttribute("user") == null)
@@ -94,10 +95,6 @@
                               </li>
                               <li><a href="${pageContext.request.contextPath}/ItemListServlet" class="link-dark rounded nav-link"> <span
                                  data-feather="chevron-right"></span> Listar Artigos
-                                 </a>
-                              </li>
-                              <li><a href="#" class="link-dark rounded nav-link"> <span
-                                 data-feather="chevron-right"></span> Pesquisar
                                  </a>
                               </li>
                            </ul>
@@ -200,7 +197,7 @@
         	 $('table.dtListarConteudo').DataTable();
         	 // Create DataTable
              var table = $('#dtBasicExample').DataTable({
-            	 dom: 'lfPrtp',
+            	 dom: 'lrtiPp', //lfPrtp
            		 language: {
            		        search: "_INPUT_",            // Removes the 'Search' field label
            		        searchPlaceholder: "Pesquisar um Artigo",   // Placeholder for the search box
@@ -219,13 +216,6 @@
            		  scrollX: true
             	 
              });
-                
-               
-                
-             // Create DataTable
-        	   	//$(document).ready(function() {
-        	    	
-        		//} );
              
                 // Create the chart with initial data
                 var container = $('<div/>').insertAfter(table.table().container());
@@ -249,9 +239,24 @@
                     chart.series[0].setData(chartData(table));
                 });
                 
+                // caixa de pesquisa
+                $('#mySearchBox').keyup(function(){  
+                    table.search($(this).val()).draw();   // this  is for customized searchbox with datatable search feature.
+               })
+                               
                              
             });
              
+
+         // Pesquisar assim que clica no tecla enter
+         var input = document.getElementById("mySearchText");
+         input.addEventListener("keyup", function(event) {
+           if (event.keyCode == 13) {
+            event.preventDefault();
+            input.click();
+           }
+         }); 
+         
             function chartData(table) {
                 var counts = {};
              
@@ -320,6 +325,16 @@
             		ele.parentElement.action = "${pageContext.request.contextPath}/BODeleteListEstadoServlet?idEstado="+ele.value;
             	}
             }
+            
+
+            // Redireciona para a página de pesquisa do artigo
+            function pesquisarArtigo(ele) {
+            	ele.parentElement.submit();                	
+            }
+            
+            
+            
+            
       </script>
       
       <div id ="pageFooter">

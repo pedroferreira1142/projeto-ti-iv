@@ -86,7 +86,7 @@ public class UserLoginServlet extends HttpServlet {
 			}
 
 			// Define um objecto para ser enviado para a página de login(destPAge)
-			RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("DashboardServlet");
 			dispatcher.forward(request, response);
 
 		} catch (SQLException | ClassNotFoundException 

@@ -141,6 +141,52 @@ public class ArtigoHelper {
 		return listaArtigo;
 
 	}
+	
+	/**
+	 * Listar artigos, registos mais recentes
+	 * 
+	 * @param Artigo
+	 * @throws SQLException
+	 * @return listagem artigos
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 */
+	public List<Artigo> listarArtigoRecentes() throws IllegalArgumentException, IllegalAccessException {
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+
+		// Lista de tipos de movimento:
+		List<Artigo> listaArtigo = new ArrayList<Artigo>();
+
+		// Tabela de dados
+		ResultSet rSetArtigo = null;
+
+		try {
+			// Stored Procedure
+			CallableStatement stmntList = con.prepareCall("{call SP_ARTIGO_LISTAR_RECENTES()}");
+
+			// Execução da query
+			rSetArtigo = stmntList.executeQuery();
+
+			// Criação da lista de objetos:
+			while (rSetArtigo.next()) {
+				Artigo a = new Artigo();
+				// Conversão de um registo rSet para um objecto:
+				DBConverter.loadResultSetIntoObject(rSetArtigo, a);
+				listaArtigo.add(a);
+			}
+
+			// Desconexão
+			conexaoDB.disconnect();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return listaArtigo;
+
+	}
 
 	/**
 	 * Apagar um artigo
@@ -224,7 +270,7 @@ public class ArtigoHelper {
 	}
 
 	/**
-	 * Pesquisar artigo por uid
+	 * Pesquisar artigo por String
 	 * 
 	 * @param String Uid
 	 * 
@@ -273,6 +319,43 @@ public class ArtigoHelper {
 		}
 
 		return listaArtigoPesquisado;
+
+	}
+	
+	/**
+	 * Contar registo dos artigos
+	 * 
+	 * @param Artigo
+	 * @throws SQLException
+	 * @return int num de registos
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 */
+	public int contarArtigo() throws IllegalArgumentException, IllegalAccessException {
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+
+		try {
+			// Stored Procedure
+			CallableStatement stmntList = con.prepareCall("{call SP_ARTIGO_CONTAR_REGISTOS()}");
+
+			// Execução da query
+			ResultSet rSetRegistos = stmntList.executeQuery();
+
+			// Extrair o número de registos:
+			while (rSetRegistos.next()) {
+				return rSetRegistos.getInt(1);
+			}
+
+			// Desconexão
+			conexaoDB.disconnect();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return 0;
 
 	}
 

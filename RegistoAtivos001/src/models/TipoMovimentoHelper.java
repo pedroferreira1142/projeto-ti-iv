@@ -167,8 +167,14 @@ public class TipoMovimentoHelper {
 			// Execução da query e passagem para o result set:
 			rSetTipoMovimento = stmntGet.executeQuery();
 			
-            // Conversão de um registo rSet para um objecto:
-            DBConverter.loadResultSetIntoObject(rSetTipoMovimento, tipoMovimento);
+			// Primeira linha
+			rSetTipoMovimento.next();
+			
+			if (rSetTipoMovimento.getRow() == 1) {
+
+				// Conversão de um registo rSet para um objecto:
+	            DBConverter.loadResultSetIntoObject(rSetTipoMovimento, tipoMovimento);
+			}
 						
 			// Desconexão:
 			conexaoDB.disconnect();

@@ -348,5 +348,95 @@ public class UtilizadorHelper {
 	}
 	
 	
+	/**
+	 * Pesquisar utilizador por uid
+	 * 
+	 * @param String Uid
+	 * 
+	 * @throws SQLException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * 
+	 * @return Utilizador
+	 */
+	public Utilizador getUtilizador(String uid) throws IllegalArgumentException, IllegalAccessException {
+		
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+
+		// Tabela de dados
+		ResultSet rSetUtilizador = null;
+
+		// Instaciamento do artigo
+		Utilizador u = new Utilizador();
+
+		try {
+			// Stored Procedure
+			CallableStatement stmntGet = con.prepareCall("{call SP_UTILIZADOR_GET(?)}");
+
+			// Atribuição do parametro do Stored Procedure
+			stmntGet.setString(1, uid);
+
+			// Execução da query
+			rSetUtilizador = stmntGet.executeQuery();
+
+			// Primeira linha
+			rSetUtilizador.next();
+
+			if (rSetUtilizador.getRow() == 1) {
+
+				// Conversão do rSet num objecto
+				DBConverter.loadResultSetIntoObject(rSetUtilizador, u);
+			}
+
+			// Desconexão
+			conexaoDB.disconnect();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return u;
+
+	}
+	
+	/**
+	 * Contar registo dos utilizador
+	 * 
+	 * @throws SQLException
+	 * @return int
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 */
+	public int contarUtilizador() throws IllegalArgumentException, IllegalAccessException {
+		// Conexão à BD
+		ConexaoDB conexaoDB = new ConexaoDB();
+		Connection con = conexaoDB.connect();
+
+		try {
+			// Stored Procedure
+			CallableStatement stmntList = con.prepareCall("{call SP_UTILIZADOR_CONTAR_REGISTOS()}");
+
+			// Execução da query
+			ResultSet rSetRegistos = stmntList.executeQuery();
+
+			// Extrair o número de registos:
+			while (rSetRegistos.next()) {
+				return rSetRegistos.getInt(1);
+			}
+
+			// Desconexão
+			conexaoDB.disconnect();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return 0;
+
+	}
+	
+	
 
 }

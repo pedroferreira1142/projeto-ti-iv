@@ -1,15 +1,39 @@
 package models;
 import java.util.Date;
 
+import models.DBConverter.DBTable;
+
 
 public class Movimento {
 	
 	//Atributes
+	@DBTable(nomeColuna ="id")
 	private String uid;
-	private Date dataCricao;
+	
+	@DBTable(nomeColuna ="dataMovimento")
+	private Date dataCriacao;
+	
+	@DBTable(nomeColuna ="localMovimento")
 	private String localStock;
+	
+	@DBTable(nomeColuna ="colaboradorNuc")
 	private String colaboradorNuc;
+	
+	@DBTable(nomeColuna ="colaboradorNome")
+	private String nomeColaborador;
+	
+	@DBTable(nomeColuna ="FK_IdTipoMovimento")
 	private String uidTipoMovimento;
+	
+	@DBTable(nomeColuna ="FK_IdArtigo")
+	private String uidArtigo;
+	
+	@DBTable(nomeColuna ="FK_IdUtilizador")
+	private String uidUtilizador;
+	
+	@DBTable(nomeColuna ="obs")
+	private String obs;
+	
 	
 	
 	///Getters and setters
@@ -19,11 +43,11 @@ public class Movimento {
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
-	public Date getDataCricao() {
-		return dataCricao;
+	public Date getDataCriacao() {
+		return dataCriacao;
 	}
-	public void setDataCricao(Date dataCricao) {
-		this.dataCricao = dataCricao;
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}
 	public String getLocalStock() {
 		return localStock;
@@ -42,6 +66,30 @@ public class Movimento {
 	}
 	public void setUidTipoMovimento(String uidTipoMovimento) {
 		this.uidTipoMovimento = uidTipoMovimento;
+	}
+	public String getObs() {
+		return obs;
+	}
+	public void setObs(String obs) {
+		this.obs = obs;
+	}
+	public String getNomeColaborador() {
+		return nomeColaborador;
+	}
+	public void setNomeColaborador(String nomeColaborador) {
+		this.nomeColaborador = nomeColaborador;
+	}
+	public String getUidUtilizador() {
+		return uidUtilizador;
+	}
+	public void setUidUtilizador(String uidUtilizador) {
+		this.uidUtilizador = uidUtilizador;
+	}
+	public String getUidArtigo() {
+		return uidArtigo;
+	}
+	public void setUidArtigo(String uidArtigo) {
+		this.uidArtigo = uidArtigo;
 	}
 	
 	

@@ -108,7 +108,6 @@ public class ItemCreateServlet extends HttpServlet {
 		if (v.checkFieldListAreNull(campos))
 		{
 			request.setAttribute("message", vEM.get_errorNotNull());
-			destPage = "views/Utilizador/CriarUtilizador.jsp";
 		}
 		else
 		{
@@ -139,9 +138,8 @@ public class ItemCreateServlet extends HttpServlet {
 				throw new ServletException(ex);
 			}
 				
-			
-			RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
-			dispatcher.forward(request, response);
+			// Redireciona para a listagem de conteúdo
+			response.sendRedirect(request.getContextPath() + "/ItemListServlet");
 		}
 		
 	}
